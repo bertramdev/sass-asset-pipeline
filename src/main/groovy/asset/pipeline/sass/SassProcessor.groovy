@@ -77,7 +77,8 @@ class SassProcessor extends AbstractProcessor {
         }
         String assetRelativePath = assetFile.parentPath ?: ''
         def fileText
-        def workDir = new File("target/assets", assetRelativePath)
+        def baseWorkDir = AssetPipelineConfigHolder.config.sass.workDir ?: '.sass-work'
+        def workDir = new File(baseWorkDir, assetRelativePath)
         if(!workDir.exists()) {
             workDir.mkdirs()
         }
