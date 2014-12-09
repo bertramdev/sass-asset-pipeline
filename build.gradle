@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.jruby-gradle.base'
 group = 'com.bertramlabs.plugins'
-version = '2.0.13'
+version = '2.0.15.SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 if(!project.hasProperty('bintrayUser')) {
@@ -40,6 +40,10 @@ configurations {
 sourceSets {
     main {
         compileClasspath += configurations.provided
+        resources{
+            srcDir 'src/main/resources'
+            srcDir 'src/main/ruby'
+        }
     }
 }
 
