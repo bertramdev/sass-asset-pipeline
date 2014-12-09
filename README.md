@@ -12,3 +12,20 @@ Goals
 * Ability to scan AssetResolver interfaces for finding SCSS Imports
 * Sprite Generation
 * Threading Support
+
+Rubygems
+--------
+
+This plugin will create a series of interfaces that wrap the prepackaged version of `rubygems` that comes with `jruby`. It will define a working gem directory (isolated from the system GEM_HOME directory) with which it can install gems too and add to the load path. Depending on the framework in use, different means will be created to instruct this plugin which gems need installed. The goal is for gradle to be as simple as going:
+
+```groovy
+gems {
+  gem 'sass', '3.2.7'
+  gem 'compass', '1.0.1'
+  gem 'compass-blueprint'
+  //Maybe support bundler options similar to
+  gem 'myplugin', [path: '/path/to/my/local/gem']
+  //Or maybe pull from scm
+  gem 'myrepoplugin', [git: 'git://giturl', ref: 'patch-1']
+}
+```
