@@ -34,7 +34,7 @@ class SassProcessor extends AbstractProcessor {
     public static final java.lang.ThreadLocal fileMap = new ThreadLocal();
     private static final $LOCK = new Object[0]
     static ScriptingContainer container
-    // static StringWriter writer
+    static StringWriter writer
     ClassLoader classLoader
 
 
@@ -50,11 +50,11 @@ class SassProcessor extends AbstractProcessor {
                         gemSet += AssetPipelineConfigHolder.config?.sass?.gems
                     }
                     SassProcessor.container.installGemDependencies(gemSet)
-                    // if(!SassProcessor.writer) {
-                    //     SassProcessor.writer = new StringWriter()    
-                    // }
+                    if(!SassProcessor.writer) {
+                        SassProcessor.writer = new StringWriter()    
+                    }
                     
-                    // SassProcessor.container.setOutput(writer)
+                    SassProcessor.container.setOutput(writer)
                     // SassProcessor.container.runScriptlet(buildInitializationScript())
                 }
             }
@@ -103,16 +103,11 @@ class SassProcessor extends AbstractProcessor {
         args << "/assets/${assetFile.canonicalPath}".toString()
 
         synchronized($LOCK) {
-            def writer = new StringWriter()
-            def pContainer = new IsolatedScriptingContainer('sass');
-
-            pContainer.setOutput(writer)
-
-            pContainer.runBinScript('sass',args as String[])
-            def result = writer.toString()
-            pContainer.remove("THIS_FILE")
-            pContainer.terminate()
-            return result
+            
+            writer.buffer.setLength(0)
+            SassProcessor.container.setOutput(writer)
+            container.runBinScript('sass',args as String[])
+            return writer.toString()
         }
     }
 
