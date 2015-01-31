@@ -4,14 +4,23 @@ The `sass-asset-pipeline` is a plugin that provides SASS support for the asset-p
 
 For more information on how to use asset-pipeline, visit [here](http://www.github.com/bertramdev/asset-pipeline).
 
-Goals
------
+Configuration
+-------------
 
-* Ability to add own gems / libraries or versions of sass/compass for the build chain
-* Prepackaged sass/compass when not specified
-* Ability to scan AssetResolver interfaces for finding SCSS Imports
-* Sprite Generation
-* Threading Support
+This plugin can be configured to load/require alternate gems for use with the sass command.
+This can be done via the asset-pipeline config for the respective framework in use:
+
+```groovy
+grails.assets.sass.gems = ['bourbon':'4.1.1'] 
+```
+
+**NOTE**: This plugin accomplishes its goal by minimizing monkey patching on the sass library itself. Instead it attempts to override the file system behavior of jruby so that it is capable of resolving assets. This still may have issues when brought onto the windows platform and will require testing there.
+
+Usage
+-----
+Simply create `scss` or `sass` files in your assets folder. 
+
+**NOTE**: This plugin does not provide Compass support. Compass is going to move to another plugin on top of this one.
 
 Rubygems
 --------
