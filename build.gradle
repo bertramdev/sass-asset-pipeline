@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 group = 'com.bertramlabs.plugins'
-version = '2.0.0'
+version = '2.0.1'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 if(!project.hasProperty('bintrayUser')) {
@@ -63,7 +63,7 @@ publishing {
                 asNode().children().last() + {
                     resolveStrategy = Closure.DELEGATE_FIRST
                     name 'sass-asset-pipeline'
-                    description 'Provides SASS/Compass Compiling support for the Asset-Pipeline library.'
+                    description 'Provides SASS Compiling support for the Asset-Pipeline library.'
                     url 'https://github.com/bertramdev/sass-asset-pipeline'
                     scm {
                         url 'https://github.com/bertramdev/sass-asset-pipeline'
