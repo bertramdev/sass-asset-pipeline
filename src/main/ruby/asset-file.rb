@@ -1,3 +1,6 @@
+# EXPIREMENTAL WORK ON FS REPLACEMENT
+# NOT CURRENTLY IN USE
+
 require 'pathname'
 $SASS_WORK_PATH='./sass-work'
 if !defined?(AssetFile)
