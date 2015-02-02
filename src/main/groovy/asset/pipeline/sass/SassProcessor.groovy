@@ -154,7 +154,7 @@ class SassProcessor extends AbstractProcessor {
             container.put("file_dest", outputFileName)
             container.runScriptlet("""
                 environment = precompiler_mode ? :production : :development
-
+                puts "Working Path: #{working_path}"
                 Compass.add_configuration(
                 {
                 :cache => true,
