@@ -26,7 +26,9 @@ import com.bertramlabs.plugins.jruby.IsolatedScriptingContainer;
 import asset.pipeline.AbstractProcessor
 import asset.pipeline.AssetCompiler
 import asset.pipeline.AssetFile
+import asset.pipeline.AbstractAssetFile
 import asset.pipeline.AssetPipelineConfigHolder
+import groovy.transform.CompileStatic
 
 @Log4j
 class SassProcessor extends AbstractProcessor {
@@ -231,23 +233,25 @@ class SassProcessor extends AbstractProcessor {
     }
 
 
-
-    static String onImport(String path) {
-        def assetFile = threadLocal.get();
-        def dependentAsset = AssetHelper.fileForFullName(path)
-        if(assetFile) {
-          CacheManager.addCacheDependency(assetFile.canonicalPath, dependentAsset)
+    @CompileStatic
+    static void onImport(String path) {
+        AbstractAssetFile assetFile = (AbstractAssetFile)threadLocal.get();
+        AbstractAssetFile dependentAsset = (AbstractAssetFile)AssetHelper.fileForFullName(path)
+        if(assetFile && dependentAsset) {
+          CacheManager.addCacheDependency(assetFile.getCanonicalPath() as String, dependentAsset)
         }
 
-        return null
+        return
     }
 
+    @CompileStatic
     static void writeFile(String path, String content) {
-        def myMap = fileMap.get()
+        Map<String,String> myMap = (Map<String,String>)fileMap.get()
         myMap[path] = content
     }
 
+    @CompileStatic
     static String convertStreamToString(InputStream istream) {
-        return istream.text
+        return istream.getText()
     }
 }
