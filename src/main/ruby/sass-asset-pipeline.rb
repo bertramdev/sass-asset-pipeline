@@ -35,6 +35,12 @@ Sass::Engine.class_eval do
     end
 end
 
+
+Sass::Plugin::StalenessChecker.class_eval do
+        def stylesheet_needs_update?(css_file, template_file, importer = nil)
+          return true
+        end
+end
 Sass::Plugin::Compiler.class_eval do
     def update_stylesheet(filename, css, sourcemap)
 
@@ -78,6 +84,11 @@ Sass::Plugin::Compiler.class_eval do
 end
 
 Sass::Importers::Filesystem.class_eval do
+  def initialize(root)
+        @root = File.expand_path(root)
+        @real_root = @root.to_s
+        @same_name_warnings = Set.new
+  end
 	def find(name, options)
 		result = _find(@root, name, options)
 		if result
