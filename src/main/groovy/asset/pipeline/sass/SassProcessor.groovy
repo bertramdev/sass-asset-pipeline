@@ -48,7 +48,7 @@ class SassProcessor extends AbstractProcessor {
                     SassProcessor.container = new IsolatedScriptingContainer('sass',LocalVariableBehavior.PERSISTENT);
                     
 
-                    if(AssetPipelineConfigHolder.config?.sass?.resolveGems == null || AssetPipelineConfigHolder.config?.sass?.resolveGems == true) {
+                    if(AssetPipelineConfigHolder.config?.sass?.resolveGems != false || AssetPipelineConfigHolder.config?.sass?.resolveGems == true) {
                         def gemSet = [compass: '1.0.1', chunky_png: '1.3.3', 'compass-core':'1.0.1', sass: '3.4.11',fssm: '0.2.10', ffi:'1.9.6']
                         if(AssetPipelineConfigHolder.config?.sass?.gems) {
                             gemSet += AssetPipelineConfigHolder.config?.sass?.gems
@@ -151,7 +151,7 @@ class SassProcessor extends AbstractProcessor {
             def outputStyle = ":${AssetPipelineConfigHolder.config?.minifyCss ? 'compressed' : 'expanded'}"
 
             def additionalFiles = []
-            container.put("assetFilePath", assetFile.path)
+            
             container.put("load_paths", pathstext)
             container.put("project_path", new File('.').canonicalPath.replace(File.separator,AssetHelper.DIRECTIVE_FILE_SEPARATOR))
             container.put("working_path", assetFile.parentPath ? "/${assetFile.parentPath}".toString(): '')
@@ -193,7 +193,7 @@ class SassProcessor extends AbstractProcessor {
                     container.put('config_file',null)
                 }
 
-
+                container.put("assetFilePath", assetFile.path)
                 container.runScriptlet("""
                     Compass.configure_sass_plugin!
                     Compass.add_project_configuration AssetFile.new(config_file) if config_file
