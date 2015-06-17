@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 group = 'com.bertramlabs.plugins'
-version = '2.1.3'
+version = '2.1.4.BUILDSNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 if(!project.hasProperty('bintrayUser')) {

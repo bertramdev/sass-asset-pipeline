@@ -84,40 +84,6 @@ class SassProcessor extends AbstractProcessor {
         """
     }
 
-
-    // //TODO: MAYBE FIX THIS LATER
-    // String process(String input, AssetFile assetFile) {
-    //     def paths = []
-    //     if(assetFile.parentPath) {
-    //         paths << "/assets/${assetFile.parentPath}"
-
-    //     }
-    //     paths << "/assets"
-
-    //     def args = ['--trace','-r','asset-file','-r','sass-asset-pipeline']
-
-    //     if(AssetPipelineConfigHolder.config?.sass?.gems) {
-    //         AssetPipelineConfigHolder.config?.sass?.gems.each { k,v ->
-    //             args += ['-r', k]
-    //         }
-    //     }
-
-    //     paths.each { path ->
-    //         args += ['--load-path',path]
-    //     }
-    //     args << "/assets/${assetFile.canonicalPath}".toString()
-
-    //     synchronized($LOCK) {
-            
-    //         writer.buffer.setLength(0)
-    //         SassProcessor.container.setOutput(writer)
-    //         container.runBinScript('sass',args as String[])
-    //         return writer.toString()
-    //     }
-    // }
-
-
-
     String process(String input,AssetFile assetFile) {
         
         if(!this.precompiler) {
@@ -192,7 +158,6 @@ class SassProcessor extends AbstractProcessor {
                 } else {
                     container.put('config_file',null)
                 }
-
                 container.put("assetFilePath", assetFile.path)
                 container.runScriptlet("""
                     Compass.configure_sass_plugin!

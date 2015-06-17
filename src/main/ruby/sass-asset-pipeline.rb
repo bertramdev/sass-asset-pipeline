@@ -114,11 +114,13 @@ Sass::Importers::Filesystem.class_eval do
         dirname, basename, extname = split(name)
         sorted_exts = extensions.sort
         syntax = extensions[extname]
-
+        if !dirname.end_with?('/')
+          dirname = dirname + '/'
+        end
         if syntax
-          ret = [["#{dirname}/#{basename}.#{extensions.invert[syntax]}", syntax],["#{dirname}/_#{basename}.#{extensions.invert[syntax]}", syntax]]
+          ret = [["#{dirname}#{basename}.#{extensions.invert[syntax]}", syntax],["#{dirname}_#{basename}.#{extensions.invert[syntax]}", syntax]]
         else
-          ret = sorted_exts.map {|ext, syn| [["#{dirname}/#{basename}.#{ext}", syn],["#{dirname}/_#{basename}.#{ext}", syn]]}
+          ret = sorted_exts.map {|ext, syn| [["#{dirname}#{basename}.#{ext}", syn],["#{dirname}_#{basename}.#{ext}", syn]]}
           ret = Sass::Util.flatten(ret,1)
         end
         # JRuby chokes when trying to import files from JARs when the path starts with './'.
@@ -136,8 +138,14 @@ Sass::Importers::Filesystem.class_eval do
         dir = dir.gsub(File::ALT_SEPARATOR, File::SEPARATOR) unless File::ALT_SEPARATOR.nil?
 
         found = possible_asset_files(remove_root(name)).map do |f, s|
-          path = (dir == "." || Pathname.new(f).absolute?) ? f : "#{escape_glob_characters(dir)}/#{f}"
+          if dir == "." || Pathname.new(f).absolute?
+            path = f
+          else
+            escaped_dir = escape_glob_characters(dir)
+            path = escaped_dir.end_with?('/') ? "#{escaped_dir}#{f}" : "#{escaped_dir}/#{f}"
+          end
           # This is where we override default behavior
+          puts "Looking for #{path} from #{f} with dir #{dir}"
           asset_file = Java::AssetPipeline::AssetHelper.fileForFullName(path)
           asset_file ? [[asset_file.getPath(),s]] : []
         end
@@ -180,12 +188,14 @@ WARNING
         full_filename, syntax = Sass::Util.destructure(find_asset_file(dir, name, options))
 
         if !full_filename
+          puts 'Not full filename'
         	return _find_filesystem(dir,name, options)
         end
 
         options[:syntax] = syntax
         options[:filename] = full_filename
         options[:importer] = self
+        puts "Looking for asset #{full_filename}"
         asset_file = Java::AssetPipeline::AssetHelper.fileForFullName(full_filename)
         Sass::Engine.new(Java::AssetPipelineSass::SassProcessor.convertStreamToString(asset_file.getInputStream()), options)
     end
