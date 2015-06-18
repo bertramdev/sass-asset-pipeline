@@ -145,7 +145,6 @@ Sass::Importers::Filesystem.class_eval do
             path = escaped_dir.end_with?('/') ? "#{escaped_dir}#{f}" : "#{escaped_dir}/#{f}"
           end
           # This is where we override default behavior
-          puts "Looking for #{path} from #{f} with dir #{dir}"
           asset_file = Java::AssetPipeline::AssetHelper.fileForFullName(path)
           asset_file ? [[asset_file.getPath(),s]] : []
         end
@@ -188,14 +187,12 @@ WARNING
         full_filename, syntax = Sass::Util.destructure(find_asset_file(dir, name, options))
 
         if !full_filename
-          puts 'Not full filename'
         	return _find_filesystem(dir,name, options)
         end
 
         options[:syntax] = syntax
         options[:filename] = full_filename
         options[:importer] = self
-        puts "Looking for asset #{full_filename}"
         asset_file = Java::AssetPipeline::AssetHelper.fileForFullName(full_filename)
         Sass::Engine.new(Java::AssetPipelineSass::SassProcessor.convertStreamToString(asset_file.getInputStream()), options)
     end
