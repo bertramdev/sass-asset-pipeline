@@ -47,7 +47,7 @@ sourceSets {
 
 dependencies {
     provided 'org.codehaus.groovy:groovy-all:2.0.7'
-	compile "com.bertramlabs.plugins:asset-pipeline-core:2.1.1"
+	compile "com.bertramlabs.plugins:asset-pipeline-core:2.3.0"
     
     compile 'log4j:log4j:1.2.17'
 	compile 'org.jruby:jruby-complete:1.7.11'
