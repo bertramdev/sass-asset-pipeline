@@ -1,5 +1,8 @@
 SASS Asset Pipeline
 ==========================
+
+**MOVED**: This project has moved to a sub project of the main asset-pipeline repository [http://github.com/bertramdev/asset-pipeline](http://github.com/bertramdev/asset-pipeline)
+
 The `sass-asset-pipeline:2.3.0` is a plugin that provides SASS/Compass support for the asset-pipeline static asset management plugin via compass.
 
 For more information on how to use asset-pipeline, visit [here](http://www.github.com/bertramdev/asset-pipeline).
